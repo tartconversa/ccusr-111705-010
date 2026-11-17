@@ -1,6 +1,7 @@
 """使用真实 Chromium 浏览公开目录；详情与预览另由业务采集流程处理。"""
 from playwright.sync_api import sync_playwright
 from urllib.parse import urlsplit
+from .domain import interpret_card
 
 def read_catalog(origin):
     parts = urlsplit(origin)
@@ -15,6 +16,6 @@ def read_catalog(origin):
             if not page.locator('main').count():
                 raise ValueError('来源目录未加载')
             items = page.locator('.card').evaluate_all('(nodes) => nodes.map(n => ({id:n.dataset.key,name:n.querySelector("h2").textContent,summary:n.querySelector("p").textContent,href:n.querySelector("a").getAttribute("href")}))')
-            return [{'source':page.url, **item} for item in items]
+            return [{'source':page.url, **item, 'catalog_fact':interpret_card(item)} for item in items]
         finally:
             browser.close()
