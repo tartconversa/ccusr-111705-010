@@ -4,6 +4,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 from html import escape
+from .portal_behaviour import detail_fragment
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / 'fixtures' / 'portal.json').read_text(encoding='utf-8'))
@@ -14,7 +15,8 @@ def render_index():
 
 def render_detail(item):
     options = ''.join(f'<option value="{escape(str(choice))}">{escape(str(choice))}</option>' for choice in item['choices'])
-    return f"""<!doctype html><html lang="zh"><meta charset="utf-8"><title>{escape(item['name'])}</title><a href="/">返回目录</a><main data-key="{escape(item['id'])}"><h1>{escape(item['name'])}</h1><p id="summary">{escape(item['summary'])}</p><label>{escape(DATA['dimensions'][0])}<select id="choice">{options}</select></label><button id="details" type="button">{escape(DATA['dimensions'][1])}</button><section id="panel" aria-live="polite"></section><button id="preview" type="button">{escape(DATA['dimensions'][2])}</button><section id="result" aria-live="polite"></section></main><script>
+    fragment = detail_fragment(item)
+    return f"""<!doctype html><html lang="zh"><meta charset="utf-8"><title>{escape(item['name'])}</title><a href="/">返回目录</a><main data-key="{escape(item['id'])}"><h1>{escape(item['name'])}</h1><p id="summary">{escape(item['summary'])}</p><label>{escape(DATA['dimensions'][0])}<select id="choice">{options}</select></label><button id="details" type="button">{escape(DATA['dimensions'][1])}</button><section id="panel" aria-live="polite"></section><button id="preview" type="button">{escape(DATA['dimensions'][2])}</button><section id="result" aria-live="polite"></section>{fragment}</main><script>
 const choice=document.getElementById('choice'); const panel=document.getElementById('panel'); const result=document.getElementById('result');
 choice.addEventListener('change',()=>{{panel.textContent='';result.textContent='';}});
 document.getElementById('details').addEventListener('click',()=>{{panel.textContent='读取中';setTimeout(()=>{{panel.textContent=choice.value+'：'+{json.dumps(item['detail'], ensure_ascii=False)};}},45);}});
