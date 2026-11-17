@@ -1,0 +1,547 @@
+{
+  "handoff": {
+    "record_type": "stall_draft_handoff",
+    "generated_at": "2026-11-17T20:01:33.052047+00:00",
+    "exercise_window": {
+      "started_at": "2026-11-17T20:01:31.857966+00:00",
+      "finished_at": "2026-11-17T20:01:33.010183+00:00"
+    },
+    "origin": "http://127.0.0.1:33255/",
+    "item_id": "stall-01",
+    "draft_key": "stall-draft:stall-01",
+    "submission_conclusion": "not_performed",
+    "unexpected_write_attempts": [],
+    "consistency": [
+      {
+        "dimension": "摊位类别 → 所需材料",
+        "verdict": "consistent",
+        "verdict_label": "一致（已核对）",
+        "evidence_step": "category_switched",
+        "evidence_note": "类别变化后所需材料提示更新，附件输入与摘要被清空",
+        "detail": "类别切换为「食饮」，所需材料提示变为「所需材料：现场制作品安全说明」；切换前为「所需材料：工艺说明文档（含传承人介绍）」，附件与摘要同步清空。"
+      },
+      {
+        "dimension": "材料预览（同名文件不同内容）",
+        "verdict": "consistent",
+        "verdict_label": "一致（已核对）",
+        "evidence_step": "same_name_replaced",
+        "evidence_note": "文件名不变，内容变化后摘要应区分两个材料版本",
+        "detail": "两次上传文件名均为 draft.txt，摘要分别为 4e49dc61c8c8c57d… 与 15ccfad3fa4ca06e…，摘要按内容区分版本，文件名不参与身份判断。"
+      },
+      {
+        "dimension": "确认页（保存后一致）",
+        "verdict": "consistent",
+        "verdict_label": "一致（已核对）",
+        "evidence_step": "confirm_consistent",
+        "evidence_note": "连续两次点击确认按钮，验证不产生重复版本或重复请求",
+        "detail": "确认页显示「手作：材料摘要已核」，确认区为「待人工确认 / v1」；重复点击两次，草稿版本保持 1，未产生重复版本或网络请求。"
+      },
+      {
+        "dimension": "确认页（旧材料不得沿用）",
+        "verdict": "mismatch",
+        "verdict_label": "不一致（版本待核对）",
+        "evidence_step": "confirm_stale_draft",
+        "evidence_note": "确认页应明确提示版本待核对，旧材料不得被当作新申请材料",
+        "detail": "材料变化后未重新保存，确认区为「草稿已变化」，核对结果为「材料版本待核对」；已保存草稿摘要与当前预览摘要不同，系统明确标记不一致。"
+      },
+      {
+        "dimension": "换类别后旧材料是否仍附在申请上",
+        "verdict": "consistent",
+        "verdict_label": "一致（已核对）",
+        "evidence_step": "category_switched",
+        "evidence_note": "类别变化后所需材料提示更新，附件输入与摘要被清空",
+        "detail": "切换后附件输入为空、摘要为空（True）；旧材料不再附在当前类别申请上，需按新类别重新上传。"
+      },
+      {
+        "dimension": "校验错误与焦点跳转",
+        "verdict": "blocked_by_validation",
+        "verdict_label": "被校验拦截（未进入确认）",
+        "evidence_step": "validation_focus_jump",
+        "evidence_note": "焦点被移回材料上传框；随后重新定位元素继续操作，不依赖跳转前句柄",
+        "detail": "无材料点击确认时提示「校验未通过：当前类别缺少已核对材料，焦点已移回材料上传框」，焦点元素为 #attachment；重新附材料后错误清除，确认页恢复一致。"
+      },
+      {
+        "dimension": "校验后重新核对（类别保持切换后的选择）",
+        "verdict": "consistent",
+        "verdict_label": "一致（已核对）",
+        "evidence_step": "recovered_consistent",
+        "evidence_note": null,
+        "detail": "焦点跳转恢复后重新附上材料并保存，类别仍为「食饮」，确认页显示「食饮：材料摘要已核」，证明换类别流程可在报错后继续完成。"
+      },
+      {
+        "dimension": "离开恢复后重新核对",
+        "verdict": "consistent",
+        "verdict_label": "一致（已核对）",
+        "evidence_step": "restored_reattach",
+        "evidence_note": null,
+        "detail": "离开页面返回并重新附材料后，确认页显示「食饮：材料摘要已核」，类别为「食饮」。"
+      },
+      {
+        "dimension": "恢复后未附材料即确认",
+        "verdict": "blocked_by_validation",
+        "verdict_label": "被校验拦截（未进入确认）",
+        "evidence_step": "confirm_restored_without_material",
+        "evidence_note": "即使确认区出现待人工确认文案，材料守卫仍拦截，不能据此认定已提交",
+        "detail": "恢复态材料区为空（True），守卫提示「校验未通过：当前类别缺少已核对材料，焦点已移回材料上传框」并聚焦 #attachment；确认区出现文案不代表材料齐全或申请已提交。"
+      },
+      {
+        "dimension": "离开页面后草稿恢复",
+        "verdict": "consistent",
+        "verdict_label": "一致（已核对）",
+        "evidence_step": "leave_and_return",
+        "evidence_note": null,
+        "detail": "返回详情页状态为「草稿已恢复；材料需重新附上并核对」；reload 后为「草稿已恢复；材料需重新附上并核对」。草稿随 sessionStorage 恢复，但附件文件不恢复，必须重新附上。"
+      },
+      {
+        "dimension": "会话边界（不得跨会话恢复）",
+        "verdict": "consistent",
+        "verdict_label": "一致（已核对）",
+        "evidence_step": "new_session_no_restore",
+        "evidence_note": "sessionStorage 不跨会话，新会话无草稿可恢复",
+        "detail": "新会话草稿状态为「」、storedDraft 为 None，不存在跨会话草稿泄漏。"
+      }
+    ],
+    "anomaly_handling": [
+      {
+        "topic": "离开页面后恢复草稿",
+        "handled": true,
+        "detail": "同会话返回与 reload 均出现「草稿已恢复；材料需重新附上并核对」；附件输入为空，必须重新上传并重新核对。"
+      },
+      {
+        "topic": "同名文件不同内容",
+        "handled": true,
+        "detail": "以 SHA-256 摘要区分两个内容版本；未保存即确认被标记为材料版本待核对。"
+      },
+      {
+        "topic": "校验错误造成焦点跳转",
+        "handled": true,
+        "detail": "守卫将焦点移回 #attachment 并显示错误；演练在每次跳转后重新定位元素继续操作。"
+      },
+      {
+        "topic": "重复点击",
+        "handled": true,
+        "detail": "确认按钮连点两次结果幂等，草稿版本不变；全程无重复提交请求。"
+      },
+      {
+        "topic": "确认页按钮不等于正式提交",
+        "handled": true,
+        "detail": "确认页只写会话内可见文案，不产生任何写请求；守卫自检拦截结果：True。"
+      },
+      {
+        "topic": "正式申请未发出",
+        "handled": true,
+        "detail": "被拦截的写请求 1 条（均为守卫自检）；结束时仍停留在 http://127.0.0.1:33255/detail?id=stall-01，无成功提交标识。"
+      }
+    ],
+    "submission_evidence": {
+      "conclusion": "not_performed",
+      "mutating_attempts_blocked": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:33255/submit"
+        }
+      ],
+      "final_url": "http://127.0.0.1:33255/detail?id=stall-01",
+      "still_on_detail_page": true,
+      "success_indicator_present": false,
+      "guard_probe_blocked": true
+    },
+    "manual_review_checklist": [
+      "换类别后的所需材料提示是否与本次市集规则一致",
+      "同名不同内容材料的两条摘要是否与摊主实际文件对应",
+      "确认页所有“材料摘要已核”是否都基于重新附上的材料",
+      "恢复后的草稿是否都经过重新上传与重新核对",
+      "确认无任何正式申请被发出（以提交证据节为准，而非按钮是否存在）"
+    ],
+    "raw_trace_reference": "同目录 JSON 中的 steps 字段保留逐步快照"
+  },
+  "trace": {
+    "origin": "http://127.0.0.1:33255/",
+    "item_id": "stall-01",
+    "draft_key": "stall-draft:stall-01",
+    "started_at": "2026-11-17T20:01:31.857966+00:00",
+    "finished_at": "2026-11-17T20:01:33.010183+00:00",
+    "headless": true,
+    "steps": [
+      {
+        "step": "open_detail",
+        "label": "从目录卡片进入详情页",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "手作",
+          "requiredMaterial": "所需材料：工艺说明文档（含传承人介绍）",
+          "attachmentName": null,
+          "attachmentInputValue": "",
+          "uploadDigest": "",
+          "draftState": "",
+          "confirmation": "",
+          "draftCheck": "",
+          "validationError": "",
+          "activeElementId": "",
+          "storedDraft": null
+        }
+      },
+      {
+        "step": "first_preview",
+        "label": "首次上传材料，上传预览出现摘要",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "手作",
+          "requiredMaterial": "所需材料：工艺说明文档（含传承人介绍）",
+          "attachmentName": "draft.txt",
+          "attachmentInputValue": "C:\\fakepath\\draft.txt",
+          "uploadDigest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d",
+          "draftState": "已预览：draft.txt",
+          "confirmation": "",
+          "draftCheck": "",
+          "validationError": "",
+          "activeElementId": "",
+          "storedDraft": null
+        }
+      },
+      {
+        "step": "draft_saved",
+        "label": "保存演练草稿",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "手作",
+          "requiredMaterial": "所需材料：工艺说明文档（含传承人介绍）",
+          "attachmentName": "draft.txt",
+          "attachmentInputValue": "C:\\fakepath\\draft.txt",
+          "uploadDigest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d",
+          "draftState": "草稿：手作 / v1",
+          "confirmation": "",
+          "draftCheck": "手作 / draft.txt / 附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d",
+          "validationError": "",
+          "activeElementId": "draft",
+          "storedDraft": {
+            "category": "手作",
+            "filename": "draft.txt",
+            "version": 1,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        }
+      },
+      {
+        "step": "confirm_consistent",
+        "label": "重复点击查看确认页（幂等核对）",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "手作",
+          "requiredMaterial": "所需材料：工艺说明文档（含传承人介绍）",
+          "attachmentName": "draft.txt",
+          "attachmentInputValue": "C:\\fakepath\\draft.txt",
+          "uploadDigest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d",
+          "draftState": "草稿：手作 / v1",
+          "confirmation": "待人工确认 / v1",
+          "draftCheck": "手作：材料摘要已核",
+          "validationError": "",
+          "activeElementId": "confirm",
+          "storedDraft": {
+            "category": "手作",
+            "filename": "draft.txt",
+            "version": 1,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        },
+        "note": "连续两次点击确认按钮，验证不产生重复版本或重复请求"
+      },
+      {
+        "step": "same_name_replaced",
+        "label": "同名文件不同内容重新上传",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "手作",
+          "requiredMaterial": "所需材料：工艺说明文档（含传承人介绍）",
+          "attachmentName": "draft.txt",
+          "attachmentInputValue": "C:\\fakepath\\draft.txt",
+          "uploadDigest": "附件摘要：15ccfad3fa4ca06eded49c2d4f50e3e1345aaba04219b22e0646221179c36692",
+          "draftState": "已预览：draft.txt",
+          "confirmation": "",
+          "draftCheck": "",
+          "validationError": "",
+          "activeElementId": "confirm",
+          "storedDraft": {
+            "category": "手作",
+            "filename": "draft.txt",
+            "version": 1,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        },
+        "note": "文件名不变，内容变化后摘要应区分两个材料版本"
+      },
+      {
+        "step": "confirm_stale_draft",
+        "label": "材料变化后未保存即查看确认页",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "手作",
+          "requiredMaterial": "所需材料：工艺说明文档（含传承人介绍）",
+          "attachmentName": "draft.txt",
+          "attachmentInputValue": "C:\\fakepath\\draft.txt",
+          "uploadDigest": "附件摘要：15ccfad3fa4ca06eded49c2d4f50e3e1345aaba04219b22e0646221179c36692",
+          "draftState": "已预览：draft.txt",
+          "confirmation": "草稿已变化",
+          "draftCheck": "材料版本待核对",
+          "validationError": "",
+          "activeElementId": "confirm",
+          "storedDraft": {
+            "category": "手作",
+            "filename": "draft.txt",
+            "version": 1,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        },
+        "note": "确认页应明确提示版本待核对，旧材料不得被当作新申请材料"
+      },
+      {
+        "step": "category_switched",
+        "label": "切换摊位类别",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "食饮",
+          "requiredMaterial": "所需材料：现场制作品安全说明",
+          "attachmentName": null,
+          "attachmentInputValue": "",
+          "uploadDigest": "",
+          "draftState": "材料待核对",
+          "confirmation": "",
+          "draftCheck": "",
+          "validationError": "",
+          "activeElementId": "confirm",
+          "storedDraft": {
+            "category": "手作",
+            "filename": "draft.txt",
+            "version": 1,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        },
+        "note": "类别变化后所需材料提示更新，附件输入与摘要被清空"
+      },
+      {
+        "step": "validation_focus_jump",
+        "label": "缺材料触发校验错误与焦点跳转",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "食饮",
+          "requiredMaterial": "所需材料：现场制作品安全说明",
+          "attachmentName": null,
+          "attachmentInputValue": "",
+          "uploadDigest": "",
+          "draftState": "材料待核对",
+          "confirmation": "草稿已变化",
+          "draftCheck": "材料版本待核对",
+          "validationError": "校验未通过：当前类别缺少已核对材料，焦点已移回材料上传框",
+          "activeElementId": "attachment",
+          "storedDraft": {
+            "category": "手作",
+            "filename": "draft.txt",
+            "version": 1,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        },
+        "note": "焦点被移回材料上传框；随后重新定位元素继续操作，不依赖跳转前句柄"
+      },
+      {
+        "step": "reattach_after_focus",
+        "label": "焦点跳转后重新附上材料",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "食饮",
+          "requiredMaterial": "所需材料：现场制作品安全说明",
+          "attachmentName": "draft.txt",
+          "attachmentInputValue": "C:\\fakepath\\draft.txt",
+          "uploadDigest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d",
+          "draftState": "已预览：draft.txt",
+          "confirmation": "",
+          "draftCheck": "",
+          "validationError": "",
+          "activeElementId": "attachment",
+          "storedDraft": {
+            "category": "手作",
+            "filename": "draft.txt",
+            "version": 1,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        }
+      },
+      {
+        "step": "recovered_consistent",
+        "label": "焦点恢复后重新保存，确认页恢复一致",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "食饮",
+          "requiredMaterial": "所需材料：现场制作品安全说明",
+          "attachmentName": "draft.txt",
+          "attachmentInputValue": "C:\\fakepath\\draft.txt",
+          "uploadDigest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d",
+          "draftState": "草稿：食饮 / v4",
+          "confirmation": "待人工确认 / v4",
+          "draftCheck": "食饮：材料摘要已核",
+          "validationError": "",
+          "activeElementId": "confirm",
+          "storedDraft": {
+            "category": "食饮",
+            "filename": "draft.txt",
+            "version": 4,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        }
+      },
+      {
+        "step": "leave_and_return",
+        "label": "离开页面后从目录返回",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "食饮",
+          "requiredMaterial": "所需材料：现场制作品安全说明",
+          "attachmentName": null,
+          "attachmentInputValue": "",
+          "uploadDigest": "",
+          "draftState": "草稿已恢复；材料需重新附上并核对",
+          "confirmation": "",
+          "draftCheck": "",
+          "validationError": "",
+          "activeElementId": "",
+          "storedDraft": {
+            "category": "食饮",
+            "filename": "draft.txt",
+            "version": 4,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        }
+      },
+      {
+        "step": "confirm_restored_without_material",
+        "label": "恢复草稿后未重新附材料即确认",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "食饮",
+          "requiredMaterial": "所需材料：现场制作品安全说明",
+          "attachmentName": null,
+          "attachmentInputValue": "",
+          "uploadDigest": "",
+          "draftState": "草稿已恢复；材料需重新附上并核对",
+          "confirmation": "待人工确认 / v4",
+          "draftCheck": "材料版本待核对",
+          "validationError": "校验未通过：当前类别缺少已核对材料，焦点已移回材料上传框",
+          "activeElementId": "attachment",
+          "storedDraft": {
+            "category": "食饮",
+            "filename": "draft.txt",
+            "version": 4,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        },
+        "note": "即使确认区出现待人工确认文案，材料守卫仍拦截，不能据此认定已提交"
+      },
+      {
+        "step": "restored_reattach",
+        "label": "恢复后重新附材料并核对一致",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "食饮",
+          "requiredMaterial": "所需材料：现场制作品安全说明",
+          "attachmentName": "draft.txt",
+          "attachmentInputValue": "C:\\fakepath\\draft.txt",
+          "uploadDigest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d",
+          "draftState": "已预览：draft.txt",
+          "confirmation": "草稿已变化",
+          "draftCheck": "食饮：材料摘要已核",
+          "validationError": "",
+          "activeElementId": "confirm",
+          "storedDraft": {
+            "category": "食饮",
+            "filename": "draft.txt",
+            "version": 4,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        }
+      },
+      {
+        "step": "reload_restore",
+        "label": "reload 后草稿再次恢复",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "食饮",
+          "requiredMaterial": "所需材料：现场制作品安全说明",
+          "attachmentName": null,
+          "attachmentInputValue": "",
+          "uploadDigest": "",
+          "draftState": "草稿已恢复；材料需重新附上并核对",
+          "confirmation": "",
+          "draftCheck": "",
+          "validationError": "",
+          "activeElementId": "",
+          "storedDraft": {
+            "category": "食饮",
+            "filename": "draft.txt",
+            "version": 4,
+            "digest": "附件摘要：4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d"
+          }
+        }
+      },
+      {
+        "step": "new_session_no_restore",
+        "label": "新会话打开同一详情页",
+        "snapshot": {
+          "url": "http://127.0.0.1:33255/detail?id=stall-01",
+          "mainKey": "stall-01",
+          "category": "手作",
+          "requiredMaterial": "所需材料：工艺说明文档（含传承人介绍）",
+          "attachmentName": null,
+          "attachmentInputValue": "",
+          "uploadDigest": "",
+          "draftState": "",
+          "confirmation": "",
+          "draftCheck": "",
+          "validationError": "",
+          "activeElementId": "",
+          "storedDraft": null
+        },
+        "note": "sessionStorage 不跨会话，新会话无草稿可恢复"
+      },
+      {
+        "step": "submission_guard_probe",
+        "label": "正式提交守卫自检（POST /submit 应被拦截）",
+        "probe": {
+          "blocked": true,
+          "error": "TypeError: Failed to fetch"
+        }
+      }
+    ],
+    "expected_digests": {
+      "draft.txt": {
+        "first": "4e49dc61c8c8c57d6c8fd9e52cfc24e4c002e984edfce67eccd4c8e74975325d",
+        "second": "15ccfad3fa4ca06eded49c2d4f50e3e1345aaba04219b22e0646221179c36692"
+      }
+    },
+    "submission_evidence": {
+      "conclusion": "not_performed",
+      "mutating_attempts_blocked": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:33255/submit"
+        }
+      ],
+      "final_url": "http://127.0.0.1:33255/detail?id=stall-01",
+      "still_on_detail_page": true,
+      "success_indicator_present": false,
+      "guard_probe_blocked": true
+    }
+  }
+}

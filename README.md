@@ -8,5 +8,6 @@
 - `python -m compileall -q app tests`：检查代码。
 - `python -m app.site`：启动本地演练站点。
 - `python -m app.cli`：另一个终端观察目录输出。
+- `python -m app.drill_cli`：在自启的临时环回站点上完成不提交的草稿流演练，向 `handoffs/` 输出人工复核移交记录（Markdown + 逐步快照 JSON）。可传摊位身份（如 `stall-01`）与 `-o` 指定输出目录。
 
-两个终端命令用于人工演示，自动测试不依赖固定端口。
+两个终端命令用于人工演示，自动测试不依赖固定端口。`app.drill_cli` 每次启动随机端口的临时站点，演练结束即关闭；演练全程拦截 POST/PUT/PATCH/DELETE，正式申请不会发出。
