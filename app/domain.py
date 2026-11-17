@@ -11,3 +11,8 @@ def interpret_card(item):
         raise ValueError('卡片状态未识别')
     amount = found.group('amount')
     return {'kind': 'application', 'identity': item['id'], 'condition': condition, 'draft_state': observation, 'state': int(amount) if amount.isdigit() else amount}
+
+def interpret_entry(catalog_fact, signal):
+    if signal['application'] != catalog_fact['identity']:
+        raise ValueError('application identity mismatch')
+    return {'business_key': f"{signal['application']}:{signal['category']}", 'category': signal['category'], 'draft': signal['draft']}
